@@ -1,0 +1,29 @@
+name: Package VS Code Extension
+
+# Triggered by pushing a tag like "vscode-v0.1.0"
+on:
+  push:
+    tags:
+      - 'vscode-v*'
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build --workspace=packages/ui
+      - run: npm run build --workspace=packages/vscode-extension
+      - run: npx vsce package --no-dependencies
+        working-directory: packages/vscode-extension
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stowwit-vscode-extension
+          path: packages/vscode-extension/*.vsix

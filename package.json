@@ -1,0 +1,52 @@
+{
+  "name": "stowwit-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "sto(W)it - Stow Wit: an AI-powered semantic manager and indexer for Git stashes.",
+  "workspaces": [
+    "packages/core",
+    "packages/ui",
+    "packages/cli",
+    "packages/vscode-extension",
+    "packages/desktop"
+  ],
+  "scripts": {
+    "dev:core": "npm run dev --workspace=packages/core",
+    "dev:ui": "npm run dev --workspace=packages/ui",
+    "dev": "concurrently -n core,ui -c blue,yellow \"npm run dev:core\" \"npm run dev:ui\"",
+    "build": "npm run build --workspace=packages/core && npm run build --workspace=packages/ui && npm run build --workspace=packages/cli",
+    "build:core": "npm run build --workspace=packages/core",
+    "build:ui": "npm run build --workspace=packages/ui",
+    "build:cli": "npm run build --workspace=packages/cli",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write .",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "eslint": "^9.15.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "license": "MIT",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/stowwit.git"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3"
+  },
+  "allowScripts": {
+    "@vscode/vsce-sign@2.1.0": true,
+    "better-sqlite3@13.0.3": true,
+    "better-sqlite3@11.10.0": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.21.5": true,
+    "fsevents@2.3.3": true,
+    "keytar@7.9.0": true
+  }
+}
