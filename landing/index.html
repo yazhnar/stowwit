@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sto(W)it — semantic Git stash search</title>
+  <meta name="description" content="stowwit indexes your Git stashes by intent, not by number. Local-first AI summaries via Ollama, or bring your own Gemini/Claude key." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --base: #0D0E12;
+      --base-elevated: #15171F;
+      --border: #262832;
+      --border-subtle: #1B1D26;
+      --ink: #EAEAF0;
+      --ink-muted: #8B8D9B;
+      --ink-faint: #5B5D6B;
+      --brand: #FF6A1A;
+      --diff-add: #1E2B22;
+      --diff-add-text: #7FD99B;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--base);
+      color: var(--ink);
+      font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    code, .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- Star banner --- */
+    .star-banner {
+      background: var(--brand);
+      color: #1A1006;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      padding: 8px 16px;
+    }
+    .star-banner a {
+      color: #1A1006;
+      text-decoration: underline;
+    }
+
+    header.top {
+      border-bottom: 1px solid var(--border);
+      background: var(--base-elevated);
+      padding: 16px 0;
+    }
+    header.top .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-family: 'IBM Plex Mono', monospace; color: var(--brand); font-size: 15px; }
+    .top-links a { color: var(--ink-muted); font-size: 14px; margin-left: 20px; }
+    .top-links a:hover { color: var(--ink); }
+
+    .hero { padding: 88px 0 56px; }
+    .hero .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--ink-faint);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 38px;
+      line-height: 1.15;
+      font-weight: 700;
+      margin: 0 0 20px;
+      max-width: 15ch;
+    }
+    .hero p.lede {
+      font-size: 17px;
+      color: var(--ink-muted);
+      max-width: 54ch;
+      margin: 0 0 32px;
+    }
+
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 3px;
+      font-size: 14px;
+      border: 1px solid var(--border);
+    }
+    .btn.primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #17100A;
+      font-weight: 600;
+    }
+    .btn.primary:hover { text-decoration: none; opacity: 0.92; }
+    .btn.ghost { color: var(--ink); }
+    .btn.ghost:hover { text-decoration: none; border-color: var(--brand); color: var(--brand); }
+
+    .stars-badge { margin: 20px 0 0; }
+    .stars-badge img { display: block; }
+
+    /* --- Screenshot --- */
+    .screenshot {
+      margin-top: 48px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .screenshot img { display: block; width: 100%; height: auto; }
+    .screenshot-caption {
+      font-size: 13px;
+      color: var(--ink-faint);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    section.problem {
+      padding: 56px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+    section.problem h2 { font-size: 22px; margin: 0 0 16px; }
+    section.problem p { color: var(--ink-muted); max-width: 62ch; font-size: 15px; }
+
+    .diff-example {
+      margin-top: 24px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .diff-row {
+      padding: 10px 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .diff-row:last-child { border-bottom: none; }
+    .diff-row.before { color: var(--ink-faint); }
+    .diff-row.after { color: var(--ink); background: rgba(255, 106, 26, 0.06); }
+    .diff-row .label { color: var(--ink-faint); margin-right: 10px; }
+
+    section.features { padding: 56px 0; border-top: 1px solid var(--border-subtle); }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 28px;
+      margin-top: 32px;
+    }
+    .feature h3 { font-size: 15px; margin: 0 0 8px; color: var(--ink); }
+    .feature p { font-size: 14px; color: var(--ink-muted); margin: 0; }
+
+    /* --- Install --- */
+    section.install { padding: 56px 0; border-top: 1px solid var(--border-subtle); }
+    .steps { margin-top: 28px; }
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--brand);
+      font-size: 13px;
+      flex-shrink: 0;
+      width: 20px;
+      padding-top: 2px;
+    }
+    .step-body h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .step-body pre {
+      margin: 8px 0 0;
+      background: var(--base-elevated);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--ink);
+      overflow-x: auto;
+    }
+    .step-body p { margin: 0; font-size: 14px; color: var(--ink-muted); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0 48px;
+      color: var(--ink-faint);
+      font-size: 13px;
+    }
+    footer a { color: var(--ink-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="star-banner">
+    ⭐ If stowwit is useful to you, <a href="https://github.com/yazhnar/stowwit">star it on GitHub</a> — it helps others find it.
+  </div>
+
+  <header class="top">
+    <div class="wrap">
+      <span class="logo">sto(W)it</span>
+      <nav class="top-links">
+        <a href="https://github.com/yazhnar/stowwit">GitHub</a>
+        <a href="https://github.com/yazhnar/stowwit#readme">Docs</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">for people who stash and forget</p>
+      <h1>Your old stashes, finally searchable by what they actually do.</h1>
+      <p class="lede">
+        <code>git stash list</code> gives you <code>stash@{7}: WIP on main: 8f2a1bc quick fix</code>.
+        Three weeks later that tells you nothing. stowwit reads the diff, asks an AI what it does,
+        and lets you search stashes by intent — across every repo you've stashed in — instead of
+        re-opening each one to remember.
+      </p>
+
+      <div class="cta-row">
+        <a class="btn primary" href="https://github.com/yazhnar/stowwit">View on GitHub</a>
+        <a class="btn ghost" href="https://github.com/yazhnar/stowwit#getting-started">Read the install guide</a>
+      </div>
+
+      <div class="stars-badge">
+        <a href="https://github.com/yazhnar/stowwit/stargazers">
+          <img src="https://img.shields.io/github/stars/yazhnar/stowwit?style=flat&color=FF6A1A&labelColor=15171F" alt="GitHub stars" />
+        </a>
+      </div>
+
+      <div class="screenshot">
+        <img src="/assets/screenshot-diff.png" alt="stowwit UI showing an AI-generated summary of a stashed code addition, with the diff highlighted in green" loading="lazy" />
+      </div>
+      <p class="screenshot-caption">A real stash, summarized locally by Ollama — no cloud call, no leaving your machine.</p>
+    </section>
+
+    <section class="problem">
+      <h2>The opacity problem</h2>
+      <p>
+        Stashes are meant to be short-lived, but in practice they pile up —
+        across days, across repos, across "I'll get back to this." By the time
+        you do, the label is useless and the only way to know what's inside is
+        to open it and read the raw diff yourself, one stash at a time.
+      </p>
+
+      <div class="diff-example">
+        <div class="diff-row before"><span class="label">before</span>stash@{4}: WIP on main: 3f2a1bc quick fix</div>
+        <div class="diff-row after"><span class="label">after</span>fix: auth redirect loop after logout</div>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>Built local-first, on purpose</h2>
+      <p style="color: var(--ink-muted); font-size: 15px; max-width: 60ch;">
+        Point it at Ollama and your diffs never leave your machine — the point
+        for anyone whose stashes touch code that can't be pasted into a cloud
+        tool. Swap to Gemini or Claude with one environment variable if you'd
+        rather trade privacy for a stronger model.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>One engine, three surfaces</h3>
+          <p>The same local engine powers a CLI, a VS Code extension, and a desktop app — index once, browse however you already work.</p>
+        </div>
+        <div class="feature">
+          <h3>Bring your own provider</h3>
+          <p>Ollama, Gemini, or Claude — chosen with a single environment variable, nothing hardcoded.</p>
+        </div>
+        <div class="feature">
+          <h3>Open source, MIT licensed</h3>
+          <p>Read the code, run it yourself, fork it. Nothing about how it works is hidden.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="install">
+      <h2>Get running in a few minutes</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div class="step-body">
+            <h4>Clone and install</h4>
+            <pre>git clone https://github.com/yazhnar/stowwit.git
+cd stowwit
+npm install</pre>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div class="step-body">
+            <h4>Install Ollama for local, private summaries</h4>
+            <pre>ollama pull qwen2.5-coder</pre>
+            <p>Or skip this and use Gemini/Claude instead — see the README for both.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div class="step-body">
+            <h4>Point stowwit at a repo</h4>
+            <pre>cp packages/core/.env.example packages/core/.env
+# set REPO_PATH to the repo you want indexed</pre>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">04</span>
+          <div class="step-body">
+            <h4>Run it</h4>
+            <pre>npm run dev</pre>
+            <p>Open localhost:5173, hit "Sync stashes," and start searching.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      MIT licensed · <a href="https://github.com/yazhnar/stowwit">github.com/yazhnar/stowwit</a>
+    </div>
+  </footer>
+
+</body>
+</html>

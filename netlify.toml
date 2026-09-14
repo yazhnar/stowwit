@@ -1,0 +1,13 @@
+# Netlify config for stowwit's marketing/docs site.
+# This deploys ONLY the static landing page in /landing — not the actual
+# stowwit app, which is local-first and has no meaningful hosted deployment
+# (it needs a local git repo, local SQLite file, and a local or user-provided
+# AI provider to do anything).
+[build]
+  publish = "landing"
+  command = ""
+
+[[redirects]]
+  from = "/docs"
+  to = "https://github.com/yazhnar/stowwit#readme"
+  status = 302
