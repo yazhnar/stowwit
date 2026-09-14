@@ -8,7 +8,7 @@
 
 **Your Git stashes, searchable by what they actually do, not by a number that resets every time you pop one.**
 
-## Who this is for
+## 🎯 Who this is for
 
 **Probably useful to you if:**
 - You context-switch a lot: pausing one branch to firefight something else, coming back days later
@@ -22,7 +22,7 @@
 
 This is a quality-of-life tool for a specific, real problem: stash amnesia at scale. It's not a replacement for good git hygiene, and it's not trying to be something every git user needs.
 
-## The problem this solves
+## 🧩 The problem this solves
 
 `git stash list` gives you `stash@{3}: WIP on main: 8f2a1bc quick fix`. That's fine for a stash you'll pop in ten minutes. It's useless for a stash from three weeks ago, in a repo you haven't touched since, that you're now trying to place among a dozen others.
 
@@ -37,17 +37,17 @@ Replaces offset-based pagination with a cursor param. API client
 changes are incomplete.
 
 
-## Why local-first
+## 🔒 Why local-first
 
 Point stowwit at [Ollama](https://ollama.com) and every diff, message, and summary stays on your machine. Nothing is sent anywhere. This matters most for teams and codebases where diffs simply can't be pasted into a cloud tool, not just as a personal preference. You can also switch to Gemini or Claude with a single environment variable if you'd rather trade privacy for a stronger model. Details for both are further down.
 
-## How it works
+## 🏗️ How it works
 
 ![stowwit architecture: CLI, VS Code extension, and desktop app all talking to the local core engine over localhost:3000, which routes to either local Ollama or cloud Gemini/Claude based on one environment variable](./docs/architecture-diagram.svg)
 
 `@stowwit/core` is the only package with real logic. It shells out to `git` to list stashes and pull diffs, stores an indexed summary per stash in a local SQLite file, and routes summarization requests to whichever AI provider you've configured. The CLI, VS Code extension, and desktop app are thin clients that all talk to this one local engine, so nothing is duplicated across surfaces.
 
-## Packages
+## 📦 Packages
 
 | Package                     | What it is                                                        |
 | ---------------------------- | ------------------------------------------------------------------ |
@@ -57,7 +57,7 @@ Point stowwit at [Ollama](https://ollama.com) and every diff, message, and summa
 | `packages/vscode-extension`   | Thin VS Code webview host for the shared UI                      |
 | `packages/desktop`            | Tauri desktop shell for the shared UI                             |
 
-## Getting started
+## ⚡ Getting started
 
 **Requirements:** Node.js 18.18 or later, git, and, for local AI, [Ollama](https://ollama.com) running with a model pulled.
 
@@ -81,7 +81,7 @@ npm run dev
 
 Open `http://localhost:5173`, hit **Sync stashes**, and start searching.
 
-### Using the CLI
+### Using the CLI 💻
 
 ```bash
 npm run build:cli
@@ -105,11 +105,11 @@ stowwit sync
 stowwit list
 ```
 
-## Choosing an AI provider
+## Choosing an AI provider 🤖
 
 Set `LLM_PROVIDER` in `packages/core/.env`. Whichever you pick, changes only take effect after restarting `npm run dev`, since environment variables load once at startup.
 
-### Ollama (local, the default)
+### Ollama (local, the default) 🏠
 Nothing leaves your machine. Good for any repo where diffs shouldn't be pasted into a cloud tool.
 
 ```bash
@@ -123,7 +123,7 @@ OLLAMA_HOST=http://localhost:11434
 OLLAMA_MODEL=qwen2.5-coder
 
 
-### Gemini (cloud)
+### Gemini (cloud) ☁️
 1. Get a key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
 2. In `packages/core/.env`:
 
@@ -134,7 +134,7 @@ GEMINI_MODEL=gemini-1.5-flash
 
 3. Restart `npm run dev` and sync. Diff content for summarization is sent to Google's API for this provider, not kept local.
 
-### Claude (cloud)
+### Claude (cloud) ☁️
 1. Get a key at [console.anthropic.com](https://console.anthropic.com).
 2. In `packages/core/.env`:
 
@@ -145,11 +145,11 @@ CLAUDE_MODEL=claude-3-5-haiku-latest
 
 3. Restart `npm run dev` and sync. As with Gemini, diff content is sent to Anthropic's API for this provider.
 
-## Contributing
+## 🤝 Contributing
 
 Issues and PRs are welcome. Please open an issue before starting large changes so we can talk through the approach first.
 
-## License
+## 📄 License
 
 MIT. See [LICENSE](./LICENSE).
 
