@@ -1,0 +1,66 @@
+<svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, 'SF Mono', Consolas, monospace">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5B5D6B" />
+    </marker>
+    <marker id="arrowBrand" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF6A1A" />
+    </marker>
+  </defs>
+
+  <rect width="960" height="620" fill="#0D0E12" />
+
+  <g>
+    <rect x="60" y="40" width="220" height="70" rx="6" fill="#15171F" stroke="#262832" stroke-width="1.5" />
+    <text x="170" y="80" fill="#EAEAF0" font-size="18" text-anchor="middle">CLI</text>
+
+    <rect x="370" y="40" width="220" height="70" rx="6" fill="#15171F" stroke="#262832" stroke-width="1.5" />
+    <text x="480" y="72" fill="#EAEAF0" font-size="16" text-anchor="middle">VS Code</text>
+    <text x="480" y="94" fill="#EAEAF0" font-size="16" text-anchor="middle">Extension</text>
+
+    <rect x="680" y="40" width="220" height="70" rx="6" fill="#15171F" stroke="#262832" stroke-width="1.5" />
+    <text x="790" y="72" fill="#EAEAF0" font-size="16" text-anchor="middle">Desktop</text>
+    <text x="790" y="94" fill="#EAEAF0" font-size="16" text-anchor="middle">App (Tauri)</text>
+  </g>
+
+  <path d="M 170 110 L 170 160" stroke="#5B5D6B" stroke-width="1.5" fill="none" />
+  <path d="M 480 110 L 480 160" stroke="#5B5D6B" stroke-width="1.5" fill="none" />
+  <path d="M 790 110 L 790 160" stroke="#5B5D6B" stroke-width="1.5" fill="none" />
+  <path d="M 170 160 L 790 160" stroke="#5B5D6B" stroke-width="1.5" fill="none" />
+
+  <path d="M 480 160 L 480 210" stroke="#5B5D6B" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <rect x="410" y="176" width="140" height="26" rx="3" fill="#0D0E12" stroke="#262832" />
+  <text x="480" y="194" fill="#8B8D9B" font-size="13" text-anchor="middle">localhost:3000</text>
+
+  <rect x="330" y="220" width="300" height="110" rx="6" fill="#15171F" stroke="#FF6A1A" stroke-width="2" />
+  <text x="480" y="252" fill="#FF6A1A" font-size="18" text-anchor="middle" font-weight="600">@stowwit/core</text>
+  <text x="480" y="280" fill="#8B8D9B" font-size="14" text-anchor="middle">Express - Git - SQLite</text>
+  <text x="480" y="302" fill="#8B8D9B" font-size="14" text-anchor="middle">AI provider router</text>
+
+  <path d="M 480 330 L 480 370" stroke="#5B5D6B" stroke-width="1.5" fill="none" />
+  <path d="M 280 370 L 680 370" stroke="#5B5D6B" stroke-width="1.5" fill="none" />
+
+  <path d="M 280 370 L 280 410" stroke="#FF6A1A" stroke-width="1.5" fill="none" marker-end="url(#arrowBrand)" />
+  <path d="M 680 370 L 680 410" stroke="#5B5D6B" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+
+  <rect x="380" y="345" width="200" height="24" rx="3" fill="#0D0E12" stroke="#262832" />
+  <text x="480" y="362" fill="#8B8D9B" font-size="12" text-anchor="middle">one env var picks the path</text>
+
+  <rect x="160" y="420" width="240" height="90" rx="6" fill="#15171F" stroke="#FF6A1A" stroke-width="1.5" />
+  <text x="280" y="452" fill="#EAEAF0" font-size="17" text-anchor="middle" font-weight="600">Ollama</text>
+  <text x="280" y="474" fill="#7FD99B" font-size="13" text-anchor="middle">local, nothing leaves your machine</text>
+
+  <rect x="560" y="420" width="240" height="90" rx="6" fill="#15171F" stroke="#262832" stroke-width="1.5" />
+  <text x="680" y="452" fill="#EAEAF0" font-size="17" text-anchor="middle" font-weight="600">Gemini / Claude</text>
+  <text x="680" y="474" fill="#8B8D9B" font-size="13" text-anchor="middle">cloud, requires an API key</text>
+
+  <g transform="translate(60, 550)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#FF6A1A" stroke-width="2" />
+    <text x="40" y="5" fill="#8B8D9B" font-size="13">local / private path</text>
+
+    <line x1="230" y1="0" x2="260" y2="0" stroke="#5B5D6B" stroke-width="1.5" />
+    <text x="270" y="5" fill="#8B8D9B" font-size="13">cloud path / internal call</text>
+  </g>
+
+  <text x="60" y="600" fill="#5B5D6B" font-size="12">All three clients talk to the same local engine. No logic is duplicated across them.</text>
+</svg>
