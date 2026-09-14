@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sto(W)it — semantic Git stash search</title>
+  <title>sto(W)it: semantic Git stash search</title>
   <meta name="description" content="stowwit indexes your Git stashes by intent, not by number. Local-first AI summaries via Ollama, or bring your own Gemini/Claude key." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -211,7 +211,7 @@
 <body>
 
   <div class="star-banner">
-    ⭐ If stowwit is useful to you, <a href="https://github.com/yazhnar/stowwit">star it on GitHub</a> — it helps others find it.
+    ⭐ If stowwit is useful to you, <a href="https://github.com/yazhnar/stowwit">star it on GitHub</a>. It helps others find it.
   </div>
 
   <header class="top">
@@ -231,7 +231,7 @@
       <p class="lede">
         <code>git stash list</code> gives you <code>stash@{7}: WIP on main: 8f2a1bc quick fix</code>.
         Three weeks later that tells you nothing. stowwit reads the diff, asks an AI what it does,
-        and lets you search stashes by intent — across every repo you've stashed in — instead of
+        and lets you search stashes by intent, across every repo you've stashed in, instead of
         re-opening each one to remember.
       </p>
 
@@ -249,13 +249,13 @@
       <div class="screenshot">
         <img src="/assets/screenshot-diff.png" alt="stowwit UI showing an AI-generated summary of a stashed code addition, with the diff highlighted in green" loading="lazy" />
       </div>
-      <p class="screenshot-caption">A real stash, summarized locally by Ollama — no cloud call, no leaving your machine.</p>
+      <p class="screenshot-caption">A real stash, summarized locally by Ollama. No cloud call, nothing leaving your machine.</p>
     </section>
 
     <section class="problem">
       <h2>The opacity problem</h2>
       <p>
-        Stashes are meant to be short-lived, but in practice they pile up —
+        Stashes are meant to be short-lived, but in practice they pile up:
         across days, across repos, across "I'll get back to this." By the time
         you do, the label is useless and the only way to know what's inside is
         to open it and read the raw diff yourself, one stash at a time.
@@ -270,7 +270,7 @@
     <section class="features">
       <h2>Built local-first, on purpose</h2>
       <p style="color: var(--ink-muted); font-size: 15px; max-width: 60ch;">
-        Point it at Ollama and your diffs never leave your machine — the point
+        Point it at Ollama and your diffs never leave your machine. That is the point
         for anyone whose stashes touch code that can't be pasted into a cloud
         tool. Swap to Gemini or Claude with one environment variable if you'd
         rather trade privacy for a stronger model.
@@ -279,11 +279,11 @@
       <div class="feature-grid">
         <div class="feature">
           <h3>One engine, three surfaces</h3>
-          <p>The same local engine powers a CLI, a VS Code extension, and a desktop app — index once, browse however you already work.</p>
+          <p>The same local engine powers a CLI, a VS Code extension, and a desktop app. Index once, browse however you already work.</p>
         </div>
         <div class="feature">
           <h3>Bring your own provider</h3>
-          <p>Ollama, Gemini, or Claude — chosen with a single environment variable, nothing hardcoded.</p>
+          <p>Ollama, Gemini, or Claude, chosen with a single environment variable. Nothing hardcoded.</p>
         </div>
         <div class="feature">
           <h3>Open source, MIT licensed</h3>
@@ -309,7 +309,7 @@ npm install</pre>
           <div class="step-body">
             <h4>Install Ollama for local, private summaries</h4>
             <pre>ollama pull qwen2.5-coder</pre>
-            <p>Or skip this and use Gemini/Claude instead — see the README for both.</p>
+            <p>Or skip this and use Gemini/Claude instead. The README covers both.</p>
           </div>
         </div>
         <div class="step">
